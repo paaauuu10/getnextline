@@ -6,7 +6,7 @@
 /*   By: pbotargu <pbotargu@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:17:45 by pbotargu          #+#    #+#             */
-/*   Updated: 2023/11/13 11:33:23 by pbotargu         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:54:56 by pbotargu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ char    *ft_free_storage(char **storage)
     return (NULL);
 }
 
+
 char    *ft_get_lines(char *storage, int i)
 {
     char    *memory;
     if (!storage[i])
         return (NULL);
-    while (storage[i] && storage[i] != '\n');
+    while (storage[i] && storage[i] != '\n')
         i++;
     if (storage[i] == '\n')
         i++;
@@ -59,7 +60,7 @@ char    *ft_read(int fd, char *storage)
             return (NULL);
         }
         memory[bytes] = '\0';
-        storage = ft_strjoin(&storage, memory);
+        storage = ft_strjoin(storage, memory);
     }
     ft_free_storage(&memory);
     return (storage);
