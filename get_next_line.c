@@ -6,7 +6,7 @@
 /*   By: pbotargu <pbotargu@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:17:45 by pbotargu          #+#    #+#             */
-/*   Updated: 2023/11/13 11:54:56 by pbotargu         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:19:36 by pbotargu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,41 @@
 
 char    *ft_free_storage(char **storage)
 {
-    free(*storage);
-    *storage = NULL;
+    if (storage != NULL && *storage != NULL)
+    {
+        free(*storage);
+        *storage = NULL;
+    }    
     return (NULL);
 }
 
+char  *ft_clean_storage(char *storage)
+{   
+    int i;
+    int j;
+    char    *new_mem;
+
+    i = 0;
+    while (storage[i] && storage[i] != '\n')
+        i++;
+    if (!storage[i])
+        return (ft_free_storage(&storage));
+    new_mem = (char *)malloc(sizeof(char) * (ft_strlen(storage) - i + 1));
+    if (!new_mem)
+        return (ft_free_storage(&storage));
+    i++;
+    j = 0;
+    while (storage[i])
+        new_mem[j++] = storage[i++];
+    new_mem[j] = '\0';
+    ft_free_storage(&storage);
+    return (new_mem);
+}   
 
 char    *ft_get_lines(char *storage, int i)
 {
     char    *memory;
+    
     if (!storage[i])
         return (NULL);
     while (storage[i] && storage[i] != '\n')
@@ -35,7 +61,12 @@ char    *ft_get_lines(char *storage, int i)
     i = 0;
     while (storage[i] && storage[i] != '\n')
     {
-        memory[i] = storage [i];
+        memory[i] = storage[i];
+        i++;
+    }
+    if (storage[i] == '\n')
+    {
+        memory[i] = '\n';
         i++;
     }
     memory[i] = '\0';
@@ -60,7 +91,7 @@ char    *ft_read(int fd, char *storage)
             return (NULL);
         }
         memory[bytes] = '\0';
-        storage = ft_strjoin(storage, memory);
+        storage = ft_strjoin(&storage, memory);
     }
     ft_free_storage(&memory);
     return (storage);
